@@ -38,8 +38,13 @@ class ImageMap(object):
 		f.write( "function zone(x, y) {\n")
 		for color, rect in self.zones.items():
 			t, r, b, l = rect.rect()
-			f.write("""if(x >= %i && x <= %i && y >= %i && y <= %i) return "%x%x%x";\n""" % (l,r,t,b,color[0],color[1],color[2]))
+			f.write("""\tif(x >= %i && x <= %i && y >= %i && y <= %i) return "%s";\n""" % (l,r,t,b,hexcolor(color)))
 		f.write("}\n")
+def hexcolor(color):
+	tmp = ''
+	for c in color:
+		tmp += ("0%x" % c)[-2:]
+	return tmp
 
 if __name__ == '__main__':
 	m = ImageMap(Image.open('map.png'))
