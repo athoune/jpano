@@ -6,7 +6,6 @@ __author__ = "mathieu@garambrogne.net"
 __version__ = "0.0.1"
 
 import Image
-import sys
 
 class Zone(object):
 	def __init__(self, color, top, left):
