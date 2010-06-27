@@ -17,6 +17,8 @@ class Zone(object):
 		self.right = right
 	def __repr__(self):
 		return "<Zone %i,%i,%i,%i>" % (self.top, self.right, self.bottom, self.left)
+	def rect(self):
+		return (self.top, self.right, self.bottom, self.left)
 class ImageMap(object):
 	def __init__(self, image):
 		self.image = image
@@ -31,8 +33,16 @@ class ImageMap(object):
 					if (r,g,b) not in self.zones:
 						self.zones[(r,g,b)] = Zone(x, y)
 					self.zones[(r,g,b)].bottomRight(x,y)
+	def dummyMap(self):
+		f = open('map.js','w')
+		f.write( "function zone(x, y) {\n")
+		for color, rect in self.zones.items():
+			t, r, b, l = rect.rect()
+			f.write("""if(x >= %i && x <= %i && y >= %i && y <= %i) return "%x%x%x";\n""" % (l,r,t,b,color[0],color[1],color[2]))
+		f.write("}\n")
 
 if __name__ == '__main__':
 	m = ImageMap(Image.open('map.png'))
 	m.scan()
-	print m.zones
+	m.dummyMap()
+	#print m.zones
